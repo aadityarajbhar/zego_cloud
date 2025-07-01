@@ -6,6 +6,7 @@ import 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
 
 import '../constants/constants.dart';
 import '../services/login_service.dart';
+import '../services/permission_services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,6 +21,52 @@ class HomePageState extends State<HomePage> {
   final TextEditingController groupInviteeUserIDsTextCtrl =
       TextEditingController();
 
+  @override
+  void initState() {
+    super.initState();
+    _checkAndRequestPermissions();
+  }
+
+  Future<void> _checkAndRequestPermissions() async {
+    bool permissionsGranted = await PermissionService.requestCallPermissions();
+
+    if (!permissionsGranted) {
+      // Show dialog to user about required permissions
+      _showPermissionDialog();
+    }
+  }
+
+  void _showPermissionDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Permissions Required'),
+          content: Text(
+            'This app needs camera, microphone, and system alert window permissions to work properly with background calling. Please grant these permissions in settings.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                PermissionService.openSystemSettings();
+              },
+              child: Text('Open Settings'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Rest of your HomePage code remains the same...
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -71,6 +118,7 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  // Your existing widget methods remain the same...
   Widget logoutButton() {
     return Ink(
       child: IconButton(
@@ -81,7 +129,6 @@ class HomePageState extends State<HomePage> {
           logout().then((value) {
             onUserLogout();
             Navigator.pushNamed(
-              // ignore: use_build_context_synchronously
               context,
               PageRouteNames.login,
             );
@@ -194,8 +241,6 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-// This method displays an appropriate error or success message after sending a call invitation, providing feedback to the user. If the call invitation was successful, the method displays a success message. If the call invitation failed, the method displays an error message with the user IDs that caused the failure. The method also displays the error code and message if they are provided.
-
   void onSendCallInvitationFinished(
     String code,
     String message,
@@ -233,7 +278,6 @@ class HomePageState extends State<HomePage> {
     }
   }
 }
-
 // function parses the invitee IDs from the input and creates user objects for the call invitation.ZegoUIKitUser is a class that represents a user in the ZegoUIKit SDK. The function creates a list of ZegoUIKitUser objects from the invitee IDs entered in the text field. The function splits the invitee IDs by commas and creates a ZegoUIKitUser object for each ID. The function then adds the ZegoUIKitUser objects to a list and returns the list.
 
 List<ZegoUIKitUser> getInvitesFromTextCtrl(String textCtrlText) {

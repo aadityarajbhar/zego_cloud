@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "124810120022",
+    "project_id": "zego-calling-4a4a7",
+    "storage_bucket": "zego-calling-4a4a7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124810120022:android:d3118988ee2e0fe2c964f7",
+        "android_client_info": {
+          "package_name": "com.example.new_zego_cloud"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi9JphWej8RhFk9MQaDT_FSXaNpbYPRqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

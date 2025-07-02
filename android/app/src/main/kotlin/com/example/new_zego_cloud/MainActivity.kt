@@ -1,4 +1,4 @@
-package com.example.new_zego_cloud
+package com.servyo.partner
 
 import io.flutter.embedding.android.FlutterActivity
 

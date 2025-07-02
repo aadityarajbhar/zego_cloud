@@ -1,28 +1,10 @@
 import 'dart:io';
 
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PermissionService {
-  static const String _permissionStorageKey = 'permissions_granted';
-
   static Future<bool> requestCallPermissions() async {
-    // Check if permissions were already granted
-    final prefs = await SharedPreferences.getInstance();
-    bool permissionsAlreadyGranted =
-        prefs.getBool(_permissionStorageKey) ?? false;
-
-    if (permissionsAlreadyGranted) {
-      // Still check critical permissions that might have been revoked
-      bool systemAlertWindow = await Permission.systemAlertWindow.isGranted;
-      if (!systemAlertWindow) {
-        systemAlertWindow =
-            await Permission.systemAlertWindow.request().isGranted;
-      }
-      return systemAlertWindow;
-    }
-
-    // Request all permissions for first time
+    // Request basic permissions first
     Map<Permission, PermissionStatus> permissions = await [
       Permission.camera,
       Permission.microphone,
@@ -30,18 +12,16 @@ class PermissionService {
       Permission.phone,
     ].request();
 
-    // Request system alert window separately (most critical for background calling)
+    // Check for system alert window permission separately
     bool systemAlertWindow =
         await Permission.systemAlertWindow.request().isGranted;
 
     // For Android 13+, request notification permission explicitly
     if (Platform.isAndroid) {
-      var notificationPermission = await Permission.notification.status;
+      var notificationPermission = await Permission.notification.request();
       if (notificationPermission.isDenied) {
-        notificationPermission = await Permission.notification.request();
-        if (notificationPermission.isDenied) {
-          await openAppSettings();
-        }
+        // Guide user to settings if needed
+        await openAppSettings();
       }
     }
 
@@ -49,17 +29,16 @@ class PermissionService {
       (status) => status == PermissionStatus.granted,
     );
 
-    bool allPermissionsGranted = allBasicGranted && systemAlertWindow;
-
-    // Store permission status
-    if (allPermissionsGranted) {
-      await prefs.setBool(_permissionStorageKey, true);
-    }
-
-    return allPermissionsGranted;
+    return allBasicGranted && systemAlertWindow;
   }
 
-  static Future<void> openSystemSettings() async {
-    await openAppSettings();
+  static Future<void> requestSystemAlertWindowPermission() async {
+    if (Platform.isAndroid) {
+      final status = await Permission.systemAlertWindow.request();
+      if (status.isDenied) {
+        // Open system settings for overlay permission
+        await openAppSettings();
+      }
+    }
   }
 }

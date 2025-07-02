@@ -1,0 +1,2 @@
+-dontwarn com.google.**
+-keep class com.google.** {*;}

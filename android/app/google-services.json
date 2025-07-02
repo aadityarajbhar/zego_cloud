@@ -1,21 +1,40 @@
 {
   "project_info": {
-    "project_number": "124810120022",
-    "project_id": "zego-calling-4a4a7",
-    "storage_bucket": "zego-calling-4a4a7.firebasestorage.app"
+    "project_number": "908925361289",
+    "project_id": "service-provider-partner-app",
+    "storage_bucket": "service-provider-partner-app.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:124810120022:android:d3118988ee2e0fe2c964f7",
+        "mobilesdk_app_id": "1:908925361289:android:67cff1d7bdb21b7dea7a58",
         "android_client_info": {
-          "package_name": "com.example.new_zego_cloud"
+          "package_name": "com.servyo.partner"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBi9JphWej8RhFk9MQaDT_FSXaNpbYPRqE"
+          "current_key": "AIzaSyCCuA35COC5bjDcMpgLRD5i8PPXZHN_sAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908925361289:android:65da731c8de2d3b5ea7a58",
+        "android_client_info": {
+          "package_name": "com.servyo.user"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCuA35COC5bjDcMpgLRD5i8PPXZHN_sAo"
         }
       ],
       "services": {
